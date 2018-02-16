@@ -1,6 +1,6 @@
 package pl.piomin.services.versioning.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,23 +9,23 @@ import io.swagger.annotations.ApiModel;
 @ApiModel("Person")
 public class PersonOld extends Person {
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date birthDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate birthDate;
 
 	public PersonOld() {
 
 	}	
 	
-	public PersonOld(Long id, String name, Gender gender, Date birthDate) {
+	public PersonOld(Long id, String name, Gender gender, LocalDate birthDate) {
 		super(id, name, gender);
 		this.birthDate = birthDate;
 	}
 
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 

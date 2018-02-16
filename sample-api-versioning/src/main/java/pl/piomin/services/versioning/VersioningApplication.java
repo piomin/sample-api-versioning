@@ -2,14 +2,13 @@ package pl.piomin.services.versioning;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
 import pl.piomin.services.versioning.model.Gender;
-import pl.piomin.services.versioning.model.PersonCurrent;
 import pl.piomin.services.versioning.model.PersonOld;
 import pl.piomin.services.versioning.repository.PersonRepository;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -26,23 +25,13 @@ public class VersioningApplication {
 		new SpringApplicationBuilder(VersioningApplication.class).web(true).run(args);
 	}
 
-	@Bean("oldRepository")
-	PersonRepository oldRepository() {
+	@Bean
+	PersonRepository repository() {
 		PersonRepository repository = new PersonRepository();
-		repository.add(new PersonOld(1L, "John Smith", Gender.MALE, new Date()));
-		repository.add(new PersonOld(2L, "Lawrence Crawford", Gender.MALE, new Date()));
-		repository.add(new PersonOld(3L, "Adam Blair", Gender.MALE, new Date()));
-		repository.add(new PersonOld(4L, "Laura Saint", Gender.FEMALE, new Date()));
-		return repository;
-	}
-	
-	@Bean("currentRepository")
-	PersonRepository currentRepository() {
-		PersonRepository repository = new PersonRepository();
-		repository.add(new PersonCurrent(1L, "John Smith", Gender.MALE, 33));
-		repository.add(new PersonCurrent(2L, "Lawrence Crawford", Gender.MALE, 43));
-		repository.add(new PersonCurrent(3L, "Adam Blair", Gender.MALE, 28));
-		repository.add(new PersonCurrent(4L, "Laura Saint", Gender.FEMALE, 37));
+		repository.add(new PersonOld(1L, "John Smith", Gender.MALE, LocalDate.parse("1977-01-20")));
+		repository.add(new PersonOld(2L, "Lawrence Crawford", Gender.MALE, LocalDate.parse("1987-01-20")));
+		repository.add(new PersonOld(3L, "Adam Blair", Gender.MALE, LocalDate.parse("1982-01-20")));
+		repository.add(new PersonOld(4L, "Laura Saint", Gender.FEMALE, LocalDate.parse("1965-01-20")));
 		return repository;
 	}
 
