@@ -23,44 +23,44 @@ public class PersonController {
 	PersonMapper mapper;
 	@Autowired
 	PersonRepository repository;
-
-	@PostMapping({"/v1.0", "/v1.1"})
+	
+	@PostMapping(produces = {"application/vnd.piomin.app-v1.0+json", "application/vnd.piomin.app-v1.1+json"})
 	public PersonOld add(@RequestBody PersonOld person) {
 		return (PersonOld) repository.add(person);
 	}
 
-	@PostMapping("/v1.2")
+	@PostMapping(produces = "application/vnd.piomin.app-v1.2+json")
 	public PersonCurrent add(@RequestBody PersonCurrent person) {
 		return mapper.map((PersonOld) repository.add(person));
 	}
 	
-	@PutMapping("/v1.0")
+	@PutMapping(produces = "application/vnd.piomin.app-v1.0+json")
 	@Deprecated
 	public PersonOld update(@RequestBody PersonOld person) {
 		return (PersonOld) repository.update(person);
 	}
 	
-	@PutMapping("/v1.1/{id}")
+	@PutMapping(value = "/{id}", produces = "application/vnd.piomin.app-v1.1+json")
 	public PersonOld update(@PathVariable("id") Long id, @RequestBody PersonOld person) {
 		return (PersonOld) repository.update(person);
 	}
 	
-	@PutMapping("/v1.2/{id}")
+	@PutMapping(value = "/{id}", produces = "application/vnd.piomin.app-v1.2+json")
 	public PersonCurrent update(@PathVariable("id") Long id, @RequestBody PersonCurrent person) {
 		return mapper.map((PersonOld) repository.update(person));
 	}
 	
-	@GetMapping({"/v1.0/{id}", "/v1.1/{id}"})
+	@GetMapping(value = "/{id}", produces = {"application/vnd.piomin.app-v1.0+json", "application/vnd.piomin.app-v1.1+json"})
 	public PersonOld findByIdOld(@PathVariable("id") Long id) {
 		return (PersonOld) repository.findById(id);
 	}
 	
-	@GetMapping("/v1.2/{id}")
+	@GetMapping(value = "/{id}", produces = "application/vnd.piomin.app-v1.2+json")
 	public PersonCurrent findById(@PathVariable("id") Long id) {
 		return mapper.map((PersonOld) repository.findById(id));
 	}
 	
-	@DeleteMapping({"/v1.0/{id}", "/v1.1/{id}", "/v1.2/{id}"})
+	@DeleteMapping(value = "/{id}", produces = {"application/vnd.piomin.app-v1.0+json", "application/vnd.piomin.app-v1.1+json", "application/vnd.piomin.app-v1.2+json"})
 	public void delete(@PathVariable("id") Long id) {
 		repository.delete(id);
 	}
