@@ -50,12 +50,13 @@ public class PersonController {
 		return mapper.map((PersonOld) repository.update(person));
 	}
 	
-	@GetMapping(value = "/{id}", produces = {"application/vnd.piomin.app-v1.0+json", "application/vnd.piomin.app-v1.1+json"})
-	public PersonOld findByIdOld(@PathVariable("id") Long id) {
+	@GetMapping(name = "findByIdOld", value = "/{idOld}", produces = {"application/vnd.piomin.app-v1.0+json", "application/vnd.piomin.app-v1.1+json"})
+	@Deprecated
+	public PersonOld findByIdOld(@PathVariable("idOld") Long id) {
 		return (PersonOld) repository.findById(id);
 	}
 	
-	@GetMapping(value = "/{id}", produces = "application/vnd.piomin.app-v1.2+json")
+	@GetMapping(name = "findById", value = "/{id}", produces = "application/vnd.piomin.app-v1.2+json")
 	public PersonCurrent findById(@PathVariable("id") Long id) {
 		return mapper.map((PersonOld) repository.findById(id));
 	}
