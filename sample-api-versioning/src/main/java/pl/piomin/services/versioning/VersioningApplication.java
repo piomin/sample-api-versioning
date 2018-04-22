@@ -60,11 +60,9 @@ public class VersioningApplication {
 				.groupName("person-api-1.1")
 				.select()
 					.apis(p -> {
-						System.out.println(p.getName());
 						if (p.produces() != null) {
 							for (MediaType mt : p.produces()) {
 								if (mt.toString().equals("application/vnd.piomin.app-v1.1+json")) {
-									System.out.println(p.getName() + ": " + p.produces());
 									return true;
 								}
 							}
