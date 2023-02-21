@@ -1,28 +1,20 @@
 package pl.piomin.services.versioning;
 
-import static springfox.documentation.builders.PathSelectors.regex;
-
-import java.time.LocalDate;
-
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
-
 import pl.piomin.services.versioning.model.Gender;
 import pl.piomin.services.versioning.model.PersonOld;
 import pl.piomin.services.versioning.repository.PersonRepository;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
-@EnableSwagger2
 public class VersioningApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(VersioningApplication.class).web(true).run(args);
+		SpringApplication.run(VersioningApplication.class, args);
 	}
 
 	@Bean
@@ -36,36 +28,60 @@ public class VersioningApplication {
 	}
 
 	@Bean
-	public Docket swaggerPersonApi10() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("person-api-1.0")
-				.select()
-					.apis(RequestHandlerSelectors.basePackage("pl.piomin.services.versioning.controller"))
-					.paths(regex("/person/v1.0.*"))
-				.build()
-				.apiInfo(new ApiInfoBuilder().version("1.0").title("Person API").description("Documentation Person API v1.0").build());
+	public GroupedOpenApi personApi10() {
+		return GroupedOpenApi.builder()
+				.group("person-api-1.0")
+				.pathsToMatch("/person/v1.0/**")
+				.build();
 	}
-	
+
 	@Bean
-	public Docket swaggerPersonApi11() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("person-api-1.1")
-				.select()
-					.apis(RequestHandlerSelectors.basePackage("pl.piomin.services.versioning.controller"))
-					.paths(regex("/person/v1.1.*"))
-				.build()
-				.apiInfo(new ApiInfoBuilder().version("1.1").title("Person API").description("Documentation Person API v1.1").build());
+	public GroupedOpenApi personApi11() {
+		return GroupedOpenApi.builder()
+				.group("person-api-1.1")
+				.pathsToMatch("/person/v1.1/**")
+				.build();
 	}
-	
+
 	@Bean
-	public Docket swaggerPersonApi12() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("person-api-1.2")
-				.select()
-					.apis(RequestHandlerSelectors.basePackage("pl.piomin.services.versioning.controller"))
-					.paths(regex("/person/v1.2.*"))
-				.build()
-				.apiInfo(new ApiInfoBuilder().version("1.2").title("Person API").description("Documentation Person API v1.2").build());
+	public GroupedOpenApi personApi12() {
+		return GroupedOpenApi.builder()
+				.group("person-api-1.2")
+				.pathsToMatch("/person/v1.2/**")
+				.build();
 	}
+
+//	@Bean
+//	public Docket swaggerPersonApi10() {
+//		return new Docket(DocumentationType.SWAGGER_2)
+//				.groupName("person-api-1.0")
+//				.select()
+//					.apis(RequestHandlerSelectors.basePackage("pl.piomin.services.versioning.controller"))
+//					.paths(regex("/person/v1.0.*"))
+//				.build()
+//				.apiInfo(new ApiInfoBuilder().version("1.0").title("Person API").description("Documentation Person API v1.0").build());
+//	}
+//
+//	@Bean
+//	public Docket swaggerPersonApi11() {
+//		return new Docket(DocumentationType.SWAGGER_2)
+//				.groupName("person-api-1.1")
+//				.select()
+//					.apis(RequestHandlerSelectors.basePackage("pl.piomin.services.versioning.controller"))
+//					.paths(regex("/person/v1.1.*"))
+//				.build()
+//				.apiInfo(new ApiInfoBuilder().version("1.1").title("Person API").description("Documentation Person API v1.1").build());
+//	}
+//
+//	@Bean
+//	public Docket swaggerPersonApi12() {
+//		return new Docket(DocumentationType.SWAGGER_2)
+//				.groupName("person-api-1.2")
+//				.select()
+//					.apis(RequestHandlerSelectors.basePackage("pl.piomin.services.versioning.controller"))
+//					.paths(regex("/person/v1.2.*"))
+//				.build()
+//				.apiInfo(new ApiInfoBuilder().version("1.2").title("Person API").description("Documentation Person API v1.2").build());
+//	}
 	
 }

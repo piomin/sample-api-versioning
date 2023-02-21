@@ -31,7 +31,8 @@ public class PersonController {
 
 	@PostMapping("/v1.2")
 	public PersonCurrent add(@RequestBody PersonCurrent person) {
-		return mapper.map((PersonOld) repository.add(person));
+//		return mapper.map((PersonOld) repository.add(person));
+		return (PersonCurrent) repository.add(person);
 	}
 	
 	@PutMapping("/v1.0")

@@ -1,12 +1,11 @@
 package pl.piomin.services.versioning.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import io.swagger.annotations.ApiModel;
-
-@ApiModel("Person")
+@Schema(name = "Person")
 public class PersonOld extends Person {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
