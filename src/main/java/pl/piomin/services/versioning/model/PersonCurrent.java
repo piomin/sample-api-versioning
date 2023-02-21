@@ -1,8 +1,8 @@
 package pl.piomin.services.versioning.model;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel("Person")
+@Schema(name = "Person")
 public class PersonCurrent extends Person {
 
 	private int age;
