@@ -28,6 +28,14 @@ public class VersioningApplication {
 	}
 
 	@Bean
+	public GroupedOpenApi personApiViaHeaders() {
+		return GroupedOpenApi.builder()
+				.group("person-via-headers")
+				.pathsToMatch("/persons-via-headers/**")
+				.build();
+	}
+
+	@Bean
 	public GroupedOpenApi personApi10() {
 		return GroupedOpenApi.builder()
 				.group("person-api-1.0")
