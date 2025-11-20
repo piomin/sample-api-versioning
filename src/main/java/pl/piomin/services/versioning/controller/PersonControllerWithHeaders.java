@@ -16,38 +16,38 @@ public class PersonControllerWithHeaders {
 	@Autowired
 	PersonRepository repository;
 
-	@PostMapping(headers = "X-VERSION=v1.0")
+	@PostMapping(version = "v1.0+")
 	public PersonOld add(@RequestBody PersonOld person) {
 		return (PersonOld) repository.add(person);
 	}
 
-	@PostMapping(headers = "X-VERSION=v1.2")
+	@PostMapping(version = "v1.2")
 	public PersonCurrent add(@RequestBody PersonCurrent person) {
 		return (PersonCurrent) repository.add(person);
 	}
 	
-	@PutMapping(headers = "X-VERSION=v1.0")
+	@PutMapping(version = "v1.0")
 	@Deprecated
 	public PersonOld update(@RequestBody PersonOld person) {
 		return (PersonOld) repository.update(person);
 	}
 	
-	@PutMapping(value = "/{id}", headers = "X-VERSION=v1.1")
+	@PutMapping(value = "/{id}", version = "v1.1")
 	public PersonOld update(@PathVariable("id") Long id, @RequestBody PersonOld person) {
 		return (PersonOld) repository.update(person);
 	}
 	
-	@PutMapping(value = "/{id}", headers = "X-VERSION=v1.2")
+	@PutMapping(value = "/{id}", version = "v1.2")
 	public PersonCurrent update(@PathVariable("id") Long id, @RequestBody PersonCurrent person) {
 		return mapper.map((PersonOld) repository.update(person));
 	}
 	
-	@GetMapping(value = "/{id}", headers = "X-VERSION=v1.0")
+	@GetMapping(value = "/{id}", version = "v1.0+")
 	public PersonOld findByIdOld(@PathVariable("id") Long id) {
 		return (PersonOld) repository.findById(id);
 	}
 
-	@GetMapping(value = "/{id}", headers = "X-VERSION=v1.2")
+	@GetMapping(value = "/{id}", version = "v1.2")
 	public PersonCurrent findById(@PathVariable("id") Long id) {
 		return mapper.map((PersonOld) repository.findById(id));
 	}

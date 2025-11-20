@@ -1,17 +1,11 @@
 package pl.piomin.services.versioning;
 
 import org.instancio.Instancio;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.client.RestTestClient;
+import org.springframework.web.context.WebApplicationContext;
 import pl.piomin.services.versioning.model.PersonCurrent;
 import pl.piomin.services.versioning.model.PersonOld;
 
@@ -23,68 +17,77 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PersonControllerWithHeadersTests {
 
     @Autowired
-    TestRestTemplate restTemplate;
+    private WebApplicationContext context;
+//    @Autowired
+    RestTestClient restTestClient;
+
+    @BeforeEach
+    public void setup(WebApplicationContext context) {
+        restTestClient = RestTestClient.bindToApplicationContext(context).build();
+    }
 
     @Test
     @Order(1)
     void addV0() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-VERSION", "v1.0");
-        HttpEntity<PersonOld> httpEntity = new HttpEntity<>(Instancio.create(PersonOld.class), headers);
-        ResponseEntity<PersonOld> p = restTemplate.exchange("/persons-via-headers", HttpMethod.POST, httpEntity, PersonOld.class);
-        assertTrue(p.getStatusCode().is2xxSuccessful());
-        assertNotNull(p.getBody());
-        assertNotNull(p.getBody().getId());
+        restTestClient.post()
+                .uri("/persons-via-headers")
+                .body(Instancio.create(PersonOld.class))
+                .header("X-VERSION", "v1.0")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(PersonOld.class)
+                .value(personOld -> assertNotNull(personOld.getId()));
     }
 
     @Test
     @Order(2)
     void addV2() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-VERSION", "v1.2");
-        HttpEntity<PersonCurrent> httpEntity = new HttpEntity<>(Instancio.create(PersonCurrent.class), headers);
-        ResponseEntity<PersonCurrent> p = restTemplate.exchange("/persons-via-headers", HttpMethod.POST, httpEntity, PersonCurrent.class);
-        assertTrue(p.getStatusCode().is2xxSuccessful());
-        assertNotNull(p.getBody());
-        assertNotNull(p.getBody().getId());
-        assertTrue(p.getBody().getAge() > 0);
+        restTestClient.post()
+                .uri("/persons-via-headers")
+                .body(Instancio.create(PersonCurrent.class))
+                .header("X-VERSION", "v1.2")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(PersonCurrent.class)
+                .value(personCurrent -> assertNotNull(personCurrent.getId()))
+                .value(personCurrent -> assertTrue(personCurrent.getAge() > 0));
     }
 
     @Test
     @Order(3)
     void findByIdV0() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-VERSION", "v1.0");
-        HttpEntity<PersonCurrent> httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<PersonOld> p = restTemplate.exchange("/persons-via-headers/{id}", HttpMethod.GET, httpEntity, PersonOld.class, 1);
-        assertTrue(p.getStatusCode().is2xxSuccessful());
-        assertNotNull(p.getBody());
-        assertNotNull(p.getBody().getId());
+        restTestClient.get()
+                .uri("/persons-via-headers/{id}", 1)
+                .header("X-VERSION", "v1.0")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(PersonOld.class)
+                .value(personOld -> assertNotNull(personOld.getId()));
     }
 
     @Test
     @Order(3)
     void findByIdV2() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-VERSION", "v1.2");
-        HttpEntity<PersonCurrent> httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<PersonCurrent> p = restTemplate.exchange("/persons-via-headers/{id}", HttpMethod.GET, httpEntity, PersonCurrent.class, 2);
-        assertTrue(p.getStatusCode().is2xxSuccessful());
-        assertNotNull(p.getBody());
-        assertNotNull(p.getBody().getId());
-        assertTrue(p.getBody().getAge() > 0);
+        restTestClient.get()
+                .uri("/persons-via-headers/{id}", 2)
+                .header("X-VERSION", "v1.2")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(PersonCurrent.class)
+                .value(personCurrent -> assertNotNull(personCurrent.getId()))
+                .value(personCurrent -> assertTrue(personCurrent.getAge() > 0));
     }
 
     @Test
     @Order(3)
     void findByIdV2ToV1Compability() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-VERSION", "v1.2");
-        HttpEntity<PersonCurrent> httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<PersonCurrent> p = restTemplate.exchange("/persons-via-headers/{id}", HttpMethod.GET, httpEntity, PersonCurrent.class, 1);
-        assertTrue(p.getStatusCode().is2xxSuccessful());
-        assertNotNull(p.getBody());
-        assertNotNull(p.getBody().getId());
-        assertTrue(p.getBody().getAge() > 0);
+        restTestClient.get()
+                .uri("/persons-via-headers/{id}", 1)
+                .header("X-VERSION", "v1.2")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(PersonCurrent.class)
+                .value(personCurrent -> assertNotNull(personCurrent.getId()))
+                .value(personCurrent -> assertTrue(personCurrent.getAge() > 0));
     }
 }

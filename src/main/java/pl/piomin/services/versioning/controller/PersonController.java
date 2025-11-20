@@ -16,7 +16,7 @@ import pl.piomin.services.versioning.model.PersonOld;
 import pl.piomin.services.versioning.repository.PersonRepository;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/persons")
 public class PersonController {
 
 	@Autowired
@@ -24,44 +24,44 @@ public class PersonController {
 	@Autowired
 	PersonRepository repository;
 
-	@PostMapping({"/v1.0", "/v1.1"})
+	@PostMapping(value = "/{version}", version = "1.0+")
 	public PersonOld add(@RequestBody PersonOld person) {
 		return (PersonOld) repository.add(person);
 	}
 
-	@PostMapping("/v1.2")
+	@PostMapping(value = "/{version}", version = "1.2")
 	public PersonCurrent add(@RequestBody PersonCurrent person) {
 //		return mapper.map((PersonOld) repository.add(person));
 		return (PersonCurrent) repository.add(person);
 	}
 	
-	@PutMapping("/v1.0")
+	@PutMapping(value = "/{version}", version = "1.0")
 	@Deprecated
 	public PersonOld update(@RequestBody PersonOld person) {
 		return (PersonOld) repository.update(person);
 	}
 	
-	@PutMapping("/v1.1/{id}")
+	@PutMapping(value = "/{version}/{id}", version = "1.1")
 	public PersonOld update(@PathVariable("id") Long id, @RequestBody PersonOld person) {
 		return (PersonOld) repository.update(person);
 	}
 	
-	@PutMapping("/v1.2/{id}")
+	@PutMapping(value = "/{version}/{id}", version = "1.2")
 	public PersonCurrent update(@PathVariable("id") Long id, @RequestBody PersonCurrent person) {
 		return mapper.map((PersonOld) repository.update(person));
 	}
 	
-	@GetMapping({"/v1.0/{id}", "/v1.1/{id}"})
+	@GetMapping(value = "/{version}/{id}", version = "1.0+")
 	public PersonOld findByIdOld(@PathVariable("id") Long id) {
 		return (PersonOld) repository.findById(id);
 	}
 	
-	@GetMapping("/v1.2/{id}")
+	@GetMapping(value = "/{version}/{id}", version = "1.2")
 	public PersonCurrent findById(@PathVariable("id") Long id) {
 		return mapper.map((PersonOld) repository.findById(id));
 	}
 	
-	@DeleteMapping({"/v1.0/{id}", "/v1.1/{id}", "/v1.2/{id}"})
+	@DeleteMapping(value = "/{version}/{id}", version = "1.0+")
 	public void delete(@PathVariable("id") Long id) {
 		repository.delete(id);
 	}
