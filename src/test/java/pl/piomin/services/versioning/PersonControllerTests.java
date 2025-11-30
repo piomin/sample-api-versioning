@@ -12,14 +12,12 @@ import pl.piomin.services.versioning.model.PersonOld;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PersonControllerTests {
 
-    @Autowired
     private WebApplicationContext context;
-//    @Autowired
-    RestTestClient restTestClient;
+    private RestTestClient restTestClient;
 
     @BeforeEach
     public void setup(WebApplicationContext context) {

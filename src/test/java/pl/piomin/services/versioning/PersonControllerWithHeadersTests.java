@@ -2,7 +2,6 @@ package pl.piomin.services.versioning;
 
 import org.instancio.Instancio;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.springframework.web.context.WebApplicationContext;
@@ -12,14 +11,12 @@ import pl.piomin.services.versioning.model.PersonOld;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PersonControllerWithHeadersTests {
 
-    @Autowired
     private WebApplicationContext context;
-//    @Autowired
-    RestTestClient restTestClient;
+    private RestTestClient restTestClient;
 
     @BeforeEach
     public void setup(WebApplicationContext context) {
