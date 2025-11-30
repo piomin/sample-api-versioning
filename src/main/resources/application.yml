@@ -3,5 +3,5 @@ spring:
     apiversion:
       default: v1.0
       use:
-        header: X-VERSION
+        header: api-version
         path-segment: 1

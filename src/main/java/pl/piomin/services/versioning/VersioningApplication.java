@@ -24,6 +24,7 @@ public class VersioningApplication {
 		repository.add(new PersonOld(2L, "Lawrence Crawford", Gender.MALE, LocalDate.parse("1987-01-20")));
 		repository.add(new PersonOld(3L, "Adam Blair", Gender.MALE, LocalDate.parse("1982-01-20")));
 		repository.add(new PersonOld(4L, "Laura Saint", Gender.FEMALE, LocalDate.parse("1965-01-20")));
+		repository.add(new PersonOld(5L, "Joe Doe", Gender.MALE, LocalDate.parse("1965-01-20")));
 		return repository;
 	}
 

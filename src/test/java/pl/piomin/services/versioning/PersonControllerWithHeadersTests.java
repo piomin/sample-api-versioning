@@ -4,6 +4,7 @@ import org.instancio.Instancio;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.client.RestTestClient;
+import org.springframework.web.client.ApiVersionInserter;
 import org.springframework.web.context.WebApplicationContext;
 import pl.piomin.services.versioning.model.PersonCurrent;
 import pl.piomin.services.versioning.model.PersonOld;
@@ -20,16 +21,18 @@ public class PersonControllerWithHeadersTests {
 
     @BeforeEach
     public void setup(WebApplicationContext context) {
-        restTestClient = RestTestClient.bindToApplicationContext(context).build();
+        restTestClient = RestTestClient.bindToApplicationContext(context)
+                .baseUrl("/persons-via-headers")
+                .apiVersionInserter(ApiVersionInserter.useHeader("api-version"))
+                .build();
     }
 
     @Test
     @Order(1)
     void addV0() {
         restTestClient.post()
-                .uri("/persons-via-headers")
                 .body(Instancio.create(PersonOld.class))
-                .header("X-VERSION", "v1.0")
+                .apiVersion("v1.0")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(PersonOld.class)
@@ -40,9 +43,8 @@ public class PersonControllerWithHeadersTests {
     @Order(2)
     void addV2() {
         restTestClient.post()
-                .uri("/persons-via-headers")
                 .body(Instancio.create(PersonCurrent.class))
-                .header("X-VERSION", "v1.2")
+                .apiVersion("v1.2")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(PersonCurrent.class)
@@ -54,8 +56,8 @@ public class PersonControllerWithHeadersTests {
     @Order(3)
     void findByIdV0() {
         restTestClient.get()
-                .uri("/persons-via-headers/{id}", 1)
-                .header("X-VERSION", "v1.0")
+                .uri("/{id}", 1)
+                .apiVersion("v1.0")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(PersonOld.class)
@@ -66,8 +68,8 @@ public class PersonControllerWithHeadersTests {
     @Order(3)
     void findByIdV2() {
         restTestClient.get()
-                .uri("/persons-via-headers/{id}", 2)
-                .header("X-VERSION", "v1.2")
+                .uri("/{id}", 2)
+                .apiVersion("v1.2")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(PersonCurrent.class)
@@ -79,8 +81,8 @@ public class PersonControllerWithHeadersTests {
     @Order(3)
     void findByIdV2ToV1Compability() {
         restTestClient.get()
-                .uri("/persons-via-headers/{id}", 1)
-                .header("X-VERSION", "v1.2")
+                .uri("/{id}", 1)
+                .apiVersion("v1.2")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(PersonCurrent.class)
