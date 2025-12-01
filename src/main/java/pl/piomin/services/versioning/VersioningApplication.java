@@ -41,7 +41,7 @@ public class VersioningApplication {
 	public GroupedOpenApi personApi10() {
 		return GroupedOpenApi.builder()
 				.group("person-api-1.0")
-				.pathsToMatch("/person/v1.0/**")
+				.pathsToMatch("/persons/v1.0/**")
 				.build();
 	}
 
@@ -49,7 +49,7 @@ public class VersioningApplication {
 	public GroupedOpenApi personApi11() {
 		return GroupedOpenApi.builder()
 				.group("person-api-1.1")
-				.pathsToMatch("/person/v1.1/**")
+				.pathsToMatch("/persons/v1.1/**")
 				.build();
 	}
 
@@ -57,7 +57,7 @@ public class VersioningApplication {
 	public GroupedOpenApi personApi12() {
 		return GroupedOpenApi.builder()
 				.group("person-api-1.2")
-				.pathsToMatch("/person/v1.2/**")
+				.pathsToMatch("/persons/v1.2/**")
 				.build();
 	}
 	

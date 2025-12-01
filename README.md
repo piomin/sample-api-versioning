@@ -7,7 +7,9 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-api-versioning&metric=coverage)](https://sonarcloud.io/dashboard?id=piomin_sample-api-versioning)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-api-versioning&metric=ncloc)](https://sonarcloud.io/dashboard?id=piomin_sample-api-versioning)
 
-Detailed description can be found here: [Versioning REST API with Spring Boot and Swagger](https://piotrminkowski.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/) 
+## Articles
+1. Guide to API versiong with Spring Boot and a standard API offered by Spring MVC before official built-in support was available. Detailed description can be found here: [Versioning REST API with Spring Boot and Swagger](https://piotrminkowski.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/)
+2. Guide to built-in API versioning feature available since Spring Boot 4. Detailed description can be found here: [Spring Boot Built-in API Versioning](https://piotrminkowski.com/2025/12/01/spring-boot-built-in-api-versioning/)
 
 
 ## API Versioning Implementation
