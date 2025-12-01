@@ -4,6 +4,7 @@ import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import pl.piomin.services.versioning.mapper.PersonMapper;
 import pl.piomin.services.versioning.model.Gender;
 import pl.piomin.services.versioning.model.PersonOld;
 import pl.piomin.services.versioning.repository.PersonRepository;
@@ -18,8 +19,8 @@ public class VersioningApplication {
 	}
 
 	@Bean
-	PersonRepository repository() {
-		PersonRepository repository = new PersonRepository();
+	PersonRepository repository(PersonMapper mapper) {
+		PersonRepository repository = new PersonRepository(mapper);
 		repository.add(new PersonOld(1L, "John Smith", Gender.MALE, LocalDate.parse("1977-01-20")));
 		repository.add(new PersonOld(2L, "Lawrence Crawford", Gender.MALE, LocalDate.parse("1987-01-20")));
 		repository.add(new PersonOld(3L, "Adam Blair", Gender.MALE, LocalDate.parse("1982-01-20")));

@@ -1,19 +1,30 @@
 package pl.piomin.services.versioning.repository;
 
+import org.springframework.stereotype.Repository;
+import pl.piomin.services.versioning.mapper.PersonMapper;
+import pl.piomin.services.versioning.model.Person;
+import pl.piomin.services.versioning.model.PersonCurrent;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import pl.piomin.services.versioning.model.Person;
-
+@Repository
 public class PersonRepository {
 
 	private List<Person> persons = new ArrayList<>();
-	
+	private PersonMapper mapper;
+
+	public PersonRepository(PersonMapper mapper) {
+		this.mapper = mapper;
+	}
+
 	public Person add(Person person) {
-		person.setId((long) (persons.size()+1));
-		persons.add(person);
-		return person;
+		Person p = mapper.mapToOld(person);
+		p.setId((long) (persons.size()+1));
+		persons.add(p);
+		if (person instanceof PersonCurrent)
+			return mapper.mapToCurrent(p);
+		return p;
 	}
 	
 	public Person update(Person person) {
@@ -22,16 +33,16 @@ public class PersonRepository {
 	}
 	
 	public Person update(Long id, Person person) {
-		persons.set(id.intValue() - 1, person);
-		return person;
+		Person p = mapper.mapToOld(person);
+		persons.set(id.intValue() - 1, p);
+		return mapper.mapToCurrent(p);
 	}
 	
 	public Person findById(Long id) {
-		Optional<Person> person = persons.stream().filter(a -> a.getId().equals(id)).findFirst();
-		if (person.isPresent())
-			return person.get();
-		else
-			return null;
+		return persons.stream()
+				.filter(a -> a.getId().equals(id))
+				.findFirst()
+				.orElse(null);
 	}
 	
 	public void delete(Long id) {

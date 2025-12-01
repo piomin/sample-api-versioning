@@ -11,10 +11,13 @@ import pl.piomin.services.versioning.repository.PersonRepository;
 @RequestMapping("/persons-via-headers")
 public class PersonControllerWithHeaders {
 
-	@Autowired
-	PersonMapper mapper;
-	@Autowired
-	PersonRepository repository;
+	private PersonMapper mapper;
+	private PersonRepository repository;
+
+	public PersonControllerWithHeaders(PersonMapper mapper, PersonRepository repository) {
+		this.mapper = mapper;
+		this.repository = repository;
+	}
 
 	@PostMapping(version = "v1.0+")
 	public PersonOld add(@RequestBody PersonOld person) {
@@ -39,7 +42,7 @@ public class PersonControllerWithHeaders {
 	
 	@PutMapping(value = "/{id}", version = "v1.2")
 	public PersonCurrent update(@PathVariable("id") Long id, @RequestBody PersonCurrent person) {
-		return mapper.map((PersonOld) repository.update(person));
+		return (PersonCurrent) repository.update(person);
 	}
 	
 	@GetMapping(value = "/{id}", version = "v1.0+")
@@ -49,7 +52,7 @@ public class PersonControllerWithHeaders {
 
 	@GetMapping(value = "/{id}", version = "v1.2")
 	public PersonCurrent findById(@PathVariable("id") Long id) {
-		return mapper.map((PersonOld) repository.findById(id));
+		return (PersonCurrent) mapper.mapToCurrent(repository.findById(id));
 	}
 	
 	@DeleteMapping("/{id}")
